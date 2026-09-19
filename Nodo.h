@@ -14,4 +14,6 @@ class Nodo {
         Nodo* getSiguiente();
 
         void setSiguiente(Nodo* siguiente);
+
+        ~Nodo();
 };
