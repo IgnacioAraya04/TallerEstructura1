@@ -9,9 +9,9 @@ específicamente en la linea 27, al nombre del txt a utilizar.
 
 Instrucciones de Compilación 
 Para que el código compile correctamente se debe escribir en la terminal:
-g++ -std=c++17 main.cpp Paciente.cpp Queue.cpp Stack.cpp -o main
+" g++ -std=c++17 main.cpp Paciente.cpp Queue.cpp Stack.cpp -o main "
 y para que inicie se debe escribir:
-./main
+" ./main "
 
 (tengo la leve sospecha de porque no funciona de otra forma, pero no tengo idea de como solucionarlo, 
 pero las instrucciones ahí están :D)
