@@ -7,12 +7,10 @@
 #include "Queue.h"
 #include "Paciente.h"
 
-
 using namespace std;
 
 Queue* pacientesEspera = new Queue();
 Stack* historialAtencion = new Stack();
-
 Queue* urgencias = new Queue();
 Queue* medicinaGeneral = new Queue();
 Queue* cardiologia = new Queue();
@@ -27,6 +25,11 @@ const string serviciosDisponibles[] = {"Urgencias", "Medicina General", "Cardiol
 void cargarDatos(){
     string texto;
     ifstream archivo("ArchivoEntrada.txt");
+    if (archivo.fail()) {
+        cout << "No se pudo abrir el archivo." << endl;
+        return;
+    }
+    
     while(getline(archivo, texto)){
         stringstream ss(texto);
         int ID, edad;
@@ -49,6 +52,7 @@ void cargarDatos(){
 
 void atenderPacientes() {
     int cantidadPacientes;
+    cout << "" << endl;
     cout << "=== Pacientes en Espera ===" << endl;
     Nodo* cursor = pacientesEspera->front();
     Paciente* paciente = cursor->getDato();
@@ -63,6 +67,16 @@ void atenderPacientes() {
     cout << "" << endl;
     cout << "Indique la cantidad de pacientes a atender: ";
     cin >> cantidadPacientes;
+    if (cantidadPacientes <= 0 || cantidadPacientes > pacientesEspera->size()) {
+        cout << "Cantidad de pacientes no valida." << endl;
+        return;
+    }
+    if (cin.fail()) {
+        cin.clear(); 
+        cin.ignore(100, '\n'); 
+        cout << "Cantidad de pacientes no valida. Intente nuevamente." << endl;
+        return;
+    }
 
     Nodo* nodoPaciente = nullptr;
     Paciente* pacienteAtendido = nullptr;
@@ -117,6 +131,7 @@ void atenderPacientes() {
 }
 
 void verDepartamento() {
+    cout << "" << endl;
     cout << "=== Departamentos/Servicios ===" << endl;
     int cont = 1;
     int seleccion = 0;
@@ -127,7 +142,13 @@ void verDepartamento() {
     cout << "" << endl;
     cout << "Ingrese el numero del departamento que desea ver: ";
     cin >> seleccion;
-
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(100, '\n');
+        cout << "Opcion invalida. Intente nuevamente." << endl;
+        menu();
+        return;
+    }
     if (seleccion < 1 || seleccion > 8) {
         cout << "Departamento no valido." << endl;
         return;
@@ -179,8 +200,50 @@ void verDepartamento() {
     }
 }
 
+void revisarHistorial() {
+    cout << "" << endl;
+    cout << "=== Historial de Últimas Atenciones del Hospital ===" << endl;
+    if (historialAtencion->empty()) {
+        cout << "No hay pacientes atendidos." << endl;
+    } else {
+        Nodo* cursor = historialAtencion->front();
+        Paciente* paciente = cursor->getDato();
+        cout << "Nombre: " << paciente->getNombre() << " | " << "Edad: " << paciente->getEdad() << " | " << "Departamento: " << paciente->getServicio() << endl;
+        for (int i = 1; i < historialAtencion->size(); i++) {
+            cursor = cursor->getSiguiente();
+            paciente = cursor->getDato();
+            cout << "Nombre: " << paciente->getNombre() << " | " << "Edad: " << paciente->getEdad() << " | " << "Departamento: " << paciente->getServicio() << endl;
+        } 
+    }
+}
+
+void liberadorMemoria() {
+    pacientesEspera->clear();
+    historialAtencion->clear();
+    urgencias->clear();
+    medicinaGeneral->clear();
+    cardiologia->clear();
+    neurologia->clear();
+    traumatologia->clear();
+    cirugia->clear();
+    pediatria->clear();
+    hospitalizacion->clear();
+
+    delete pacientesEspera;
+    delete historialAtencion;
+    delete urgencias;
+    delete medicinaGeneral;
+    delete cardiologia;
+    delete neurologia;
+    delete traumatologia;
+    delete cirugia;
+    delete pediatria;
+    delete hospitalizacion;
+}
+
 void menu() {
     int opcion;
+    cout << "" << endl;
     cout << "=== Hospital Marmaja ===" << endl;
     cout << "1. Atender pacientes" << endl;
     cout << "2. Ver departamento" << endl;
@@ -189,6 +252,13 @@ void menu() {
     cout << "" << endl;
     cout << "Ingrese una opcion: ";
     cin >> opcion;
+    if (cin.fail()) {
+        cin.clear(); 
+        cin.ignore(100, '\n'); 
+        cout << "Opcion invalida. Intente nuevamente." << endl;
+        menu();
+        return;
+    }
 
     switch (opcion) {
         case 1:
@@ -200,10 +270,11 @@ void menu() {
             menu();
             break;
         case 3:
+            revisarHistorial();
             menu();
             break;
         case 4:
-            cout << "Saliendo del programa..." << endl;
+            cout << "Hasta luego! :D" << endl;
             break;
         default:
             cout << "Opcion invalida. Intente nuevamente." << endl;
@@ -215,5 +286,6 @@ void menu() {
 int main() {
     cargarDatos();
     menu();
+    liberadorMemoria();
     return 0;
 }
