@@ -18,7 +18,8 @@ void Stack::push(Nodo* nodo) {
 void Stack::pop() {
     if (this->inicio != nullptr) {
         Nodo* temp = this->inicio;
-        this->inicio = this->inicio->getSiguiente();
+        this->inicio = temp->getSiguiente();
+        temp->setSiguiente(nullptr);
         delete temp;
     }
 }

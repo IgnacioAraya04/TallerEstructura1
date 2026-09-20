@@ -31,23 +31,45 @@ void cargarDatos(){
     }
     
     while(getline(archivo, texto)){
-        stringstream ss(texto);
-        int ID, edad;
-        string idString,edadString,nombre, servicio;
+       try
+       {
+            stringstream ss(texto);
+            int ID, edad;
+            string idString,edadString,nombre, servicio;
 
-        getline(ss, idString, ';');
-        getline(ss, nombre, ';');
-        getline(ss, edadString, ';');
-        getline(ss, servicio, ';');
+            getline(ss, idString, ';');
+            getline(ss, nombre, ';');
+            getline(ss, edadString, ';');
+            getline(ss, servicio, ';');
 
 
-        ID = stoi(idString);
-        edad = stoi(edadString);
+            ID = stoi(idString);
+            edad = stoi(edadString);
 
-        Paciente* paciente = new Paciente(ID, nombre, edad, servicio);
-        Nodo* nodoPaciente = new Nodo(paciente);
-        pacientesEspera->push(nodoPaciente);
-    }
+            bool pacienteRepetido = false;
+            Nodo* cursor = pacientesEspera->front();
+            while (cursor != nullptr) {
+                Paciente* pacienteExistente = cursor->getDato();
+                if (pacienteExistente->getID() == ID) {
+                    cout << "El paciente con ID " << ID << " ya existe en la lista de espera. Se omitira su registro." << endl;
+                 pacienteRepetido = true;
+                 break;
+                }
+                cursor = cursor->getSiguiente();
+            }
+            if (!pacienteRepetido) {
+                Paciente* paciente = new Paciente(ID, nombre, edad, servicio);
+                Nodo* nodoPaciente = new Nodo(paciente);
+                pacientesEspera->push(nodoPaciente);
+            }
+       }
+         catch(const std::exception& e)
+         {
+           cout << "Existe un problema con el archivo" << endl;
+        }
+    }    
+       
+       
 }
 
 void atenderPacientes() {
@@ -99,35 +121,42 @@ void atenderPacientes() {
 
         if (servicio == "Urgencias") {
             urgencias->push(nodoPaciente);
+            historialAtencion->push(nodoHistorial);
             cout << "Paciente " << pacienteAtendido->getNombre() << " atendido en el servicio de Urgencias." << endl;
         } else if (servicio == "Medicina General") {
             medicinaGeneral->push(nodoPaciente);
+            historialAtencion->push(nodoHistorial);
             cout << "Paciente " << pacienteAtendido->getNombre() << " atendido en el servicio de Medicina General." << endl;
         } else if (servicio == "Cardiologia") {
             cardiologia->push(nodoPaciente);
+            historialAtencion->push(nodoHistorial);
             cout << "Paciente " << pacienteAtendido->getNombre() << " atendido en el servicio de Cardiologia." << endl;
         } else if (servicio == "Neurologia") {
             neurologia->push(nodoPaciente);
+            historialAtencion->push(nodoHistorial);
             cout << "Paciente " << pacienteAtendido->getNombre() << " atendido en el servicio de Neurologia." << endl;
         } else if (servicio == "Traumatologia") {
             traumatologia->push(nodoPaciente);
+            historialAtencion->push(nodoHistorial);
             cout << "Paciente " << pacienteAtendido->getNombre() << " atendido en el servicio de Traumatologia." << endl;
         } else if (servicio == "Cirugia") {
             cirugia->push(nodoPaciente);
+            historialAtencion->push(nodoHistorial);
             cout << "Paciente " << pacienteAtendido->getNombre() << " atendido en el servicio de Cirugia." << endl;
         } else if (servicio == "Pediatria") {
             pediatria->push(nodoPaciente);
+            historialAtencion->push(nodoHistorial);
             cout << "Paciente " << pacienteAtendido->getNombre() << " atendido en el servicio de Pediatria." << endl;
         } else if (servicio == "Hospitalizacion") {
             hospitalizacion->push(nodoPaciente);
+            historialAtencion->push(nodoHistorial);
             cout << "Paciente " << pacienteAtendido->getNombre() << " atendido en el servicio de Hospitalizacion." << endl;
         } else {
-            cout << "Servicio no disponible, derivado a otro hospital." << endl;
+            cout << "Servicio no disponible, paciente "<< pacienteAtendido->getNombre() << " fue derivado a otro hospital." << endl;
+            delete nodoPaciente;
+            delete nodoHistorial;
         }
-
-        historialAtencion->push(nodoHistorial);
     }
-
 }
 
 void verDepartamento() {
@@ -146,7 +175,6 @@ void verDepartamento() {
         cin.clear();
         cin.ignore(100, '\n');
         cout << "Opcion invalida. Intente nuevamente." << endl;
-        menu();
         return;
     }
     if (seleccion < 1 || seleccion > 8) {
