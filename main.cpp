@@ -24,7 +24,7 @@ const string serviciosDisponibles[] = {"Urgencias", "Medicina General", "Cardiol
 
 void cargarDatos(){
     string texto;
-    ifstream archivo("ArchivoEntrada.txt");
+    ifstream archivo("Pacientes.txt");
     if (archivo.fail()) {
         cout << "No se pudo abrir el archivo." << endl;
         return;
