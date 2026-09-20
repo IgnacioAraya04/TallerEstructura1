@@ -116,6 +116,69 @@ void atenderPacientes() {
 
 }
 
+void verDepartamento() {
+    cout << "=== Departamentos/Servicios ===" << endl;
+    int cont = 1;
+    int seleccion = 0;
+    for (const string& servicio : serviciosDisponibles) {
+        cout << cont << " - " << servicio << endl;
+        cont++;
+    }
+    cout << "" << endl;
+    cout << "Ingrese el numero del departamento que desea ver: ";
+    cin >> seleccion;
+
+    if (seleccion < 1 || seleccion > 8) {
+        cout << "Departamento no valido." << endl;
+        return;
+    }else {
+        cout << "=== Pacientes en " << serviciosDisponibles[seleccion - 1] << " ===" << endl;
+        Queue* departamento = nullptr;
+
+        switch (seleccion) {
+            case 1:
+                departamento = urgencias;
+                break;
+            case 2:
+                departamento = medicinaGeneral;
+                break;
+            case 3:
+                departamento = cardiologia;
+                break;
+            case 4:
+                departamento = neurologia;
+                break;
+            case 5:
+                departamento = traumatologia;
+                break;
+            case 6:
+                departamento = cirugia;
+                break;
+            case 7:
+                departamento = pediatria;
+                break;
+            case 8:
+                departamento = hospitalizacion;
+                break;
+        }
+
+        if (departamento->empty()) {
+            cout << "No hay pacientes en este departamento." << endl;
+        } else {
+            Nodo* cursor = departamento->front();
+            Paciente* paciente = cursor->getDato();
+            cout << " Pacientes en el departamento de " << serviciosDisponibles[seleccion - 1] << ": " << departamento->size() << endl;
+            cout << paciente->getNombre() << " (" << paciente->getEdad() << ")" << endl;
+
+            for (int i = 1; i < departamento->size(); i++) {
+                cursor = cursor->getSiguiente();
+                paciente = cursor->getDato();
+                cout << paciente->getNombre() << " (" << paciente->getEdad() << ")" << endl;
+            } 
+        }
+    }
+}
+
 void menu() {
     int opcion;
     cout << "=== Hospital Marmaja ===" << endl;
@@ -133,6 +196,7 @@ void menu() {
             menu();
             break;
         case 2:
+            verDepartamento();
             menu();
             break;
         case 3:
