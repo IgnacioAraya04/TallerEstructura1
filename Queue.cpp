@@ -6,10 +6,6 @@ Queue::Queue() {
 Queue::~Queue() {
     clear();
 }
-bool Queue::empty() {
-    return this->inicio == nullptr;
-}
-
 void Queue::push(Nodo* nodo) {
     if (this->inicio == nullptr) {
         this->inicio = nodo;
@@ -22,19 +18,21 @@ void Queue::push(Nodo* nodo) {
     }
 }
 void Queue::pop() {
-    if (this->inicio != nullptr) {
-        Nodo* temp = this->inicio;
-        this->inicio = this->inicio->getSiguiente();
-        delete temp;
+    Nodo* nodo = takeFront();
+    delete nodo;
+}
+Nodo* Queue::takeFront() {
+    if (this->inicio == nullptr) {
+        return nullptr;
     }
+
+    Nodo* nodo = this->inicio;
+    this->inicio = nodo->getSiguiente();
+    nodo->setSiguiente(nullptr);
+    return nodo;
 }
 Nodo* Queue::front() {
     return this->inicio;
-}
-void Queue::clear() {
-    while (!empty()) {
-        pop();
-    }
 }
 int Queue::size() {
     int contador = 0;
@@ -45,3 +43,11 @@ int Queue::size() {
     }
     return contador;
 }
+bool Queue::empty() {
+    return this->inicio == nullptr;
+}
+void Queue::clear() {
+    while (!empty()) {
+        pop();
+    }
+}   

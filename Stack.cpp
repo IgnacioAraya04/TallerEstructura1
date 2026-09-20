@@ -3,13 +3,8 @@
 Stack::Stack() {
     inicio = nullptr;
 }
-
 Stack::~Stack() {
     clear();
-}
-
-bool Stack::empty() {
-    return this->inicio == nullptr;
 }
 
 void Stack::push(Nodo* nodo) {
@@ -20,7 +15,6 @@ void Stack::push(Nodo* nodo) {
         this->inicio = nodo;
     }
 }
-
 void Stack::pop() {
     if (this->inicio != nullptr) {
         Nodo* temp = this->inicio;
@@ -28,17 +22,17 @@ void Stack::pop() {
         delete temp;
     }
 }
-
 Nodo* Stack::front() {
     return this->inicio;
 }
-
+bool Stack::empty() {
+    return this->inicio == nullptr;
+}
 void Stack::clear() {
     while (!empty()) {
         pop();
     }
 }
-
 int Stack::size() {
     int contador = 0;
     Nodo* cursor = this->inicio;
@@ -47,4 +41,4 @@ int Stack::size() {
         cursor = cursor->getSiguiente();
     }
     return contador;
-}
+}   

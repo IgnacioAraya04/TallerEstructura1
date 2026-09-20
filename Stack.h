@@ -6,12 +6,15 @@ private:
     Nodo* inicio;
 public:
     Stack();
+    ~Stack();
 
     void push(Nodo* nodo);
     void pop();
     Nodo* front();
 
     bool empty();
+
     void clear();
+
     int size();
 };

@@ -1,19 +1,32 @@
 #pragma once
+
 #include <iostream>
 #include "Paciente.h"
 
 class Nodo {
     private:
-        Paciente* paciente;
+        Paciente* dato;
         Nodo* siguiente;
     public:
-        Nodo(Paciente* paciente);
-        
-        Paciente* getPaciente();
+        Nodo(Paciente* dato) {
+            this->dato = dato;
+            this->siguiente = nullptr;
+        }
 
-        Nodo* getSiguiente();
+        Paciente* getDato(){
+            return dato;
+        }
 
-        void setSiguiente(Nodo* siguiente);
+        Nodo* getSiguiente(){
+            return siguiente;
+        }
 
-        ~Nodo();
+        void setSiguiente(Nodo* siguiente){
+            this->siguiente = siguiente;
+        }
+
+        ~Nodo(){
+            delete dato;
+            delete siguiente;
+        }
 };

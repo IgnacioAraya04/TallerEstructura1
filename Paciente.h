@@ -1,20 +1,19 @@
-#include <iostream> 
-#include <string>
-#include "Nodo.h"
 #pragma once
+
+#include <string>
 
 using namespace std;
 
 class Paciente {
     private:
-        string ID;
+        int ID;
         string nombre;
         int edad;
         string servicio;
     public:
-        Paciente(string ID, string nombre, int edad, string servicio);
+        Paciente(int ID, string nombre, int edad, string servicio);
 
-        string getID();
+        int getID();
 
         string getNombre();
 
